@@ -5,13 +5,13 @@ import java.util.Map;
 
 public class Session {
 
-    private Map<Integer, List<File>> session;
+    private Map<Integer, List<Image>> session;
 
-    public Session(Map<Integer, List<File>> session) {
+    public Session(Map<Integer, List<Image>> session) {
         this.session = session;
     }
 
-    public Map<Integer, List<File>> getSession() {
+    public Map<Integer, List<Image>> getSession() {
         return session;
     }
 }

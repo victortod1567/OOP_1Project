@@ -1,3 +1,4 @@
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Scanner;
 
@@ -9,8 +10,7 @@ public class CommandLine {
     public CommandLine() {
     }
 
-    public void initLine()
-   {
+    public void initLine() throws IOException {
 
        Scanner userInput = new Scanner(System.in);
        while (true) {
