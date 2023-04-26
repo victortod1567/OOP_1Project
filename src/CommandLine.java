@@ -31,11 +31,16 @@ public class CommandLine {
                case "close":
                    commands.close();
                    break;
+               case "negative":
+                    commands.negative();
+                    break;
                case "exit":
                    commands.exit();
                    break;
+                   }
+
 
            }
        }
    }
-}
+

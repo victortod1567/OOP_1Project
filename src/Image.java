@@ -31,8 +31,9 @@ public abstract class Image {
         BufferedReader reader=new BufferedReader(new FileReader("./resources/"+fileName));
         String currentLine= reader.readLine();
         if (currentLine.equals("P1") || currentLine.equals("P4"))
-           return PBM.read(fileName);
+            return PBM.read(fileName);
         return null;
     }
+
     //public abstract void write(Image img, String fileName);
 }

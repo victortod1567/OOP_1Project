@@ -14,64 +14,44 @@ public class PBM extends Image {
         try {
             BufferedReader reader = new BufferedReader(new FileReader("./resources/" + fileName));
 
-            String format = reader.readLine();
-            String check=reader.readLine();
+            String line = reader.readLine();
+            while ( line.startsWith("P") || line.startsWith("#"))
+                line= reader.readLine();
             String size;
-            if (check.charAt(0)=='#') {
-                String comment = check;
-                size = reader.readLine();
-            }
-            else size = check;
 
-            String[] sizeD = size.split(" ");
+            String[] sizeD = line.split(" ");
             int width = Integer.parseInt(sizeD[0]);
             int height = Integer.parseInt(sizeD[1]);
             int[][] pixels = new int[width][height];
 
-            int row = 0;
-            int column = 0;
-            int value;
-            while ((value = reader.read()) != -1) {
-                if (value == 0 || value == 1) {
-                    pixels[column][row] = value - 0;
-                    column++;
 
-                    if (column == width) {
-                        column = 0;
-                        row++;
-                    }
-                } else if (value == '\n' || value == '\r') {
-                }
+            for (int y=0;y<height;y++)
+            {
+                line= reader.readLine();
+                String row[]=line.trim().split(" ");
+                for (int x=0;x<width;x++)
+                    pixels[x][y]=Integer.parseInt(row[x]);
             }
             reader.close();
             return new PBM(width, height, pixels);
-        }
-        catch (IOException e)
-        {
+        } catch (IOException e) {
             System.out.println(e.getMessage());
         }
         return null;
     }
 
-    public static void invert(PBM img) throws IOException {
-        for (int i = 0; i < img.getWidth(); i++) {
-            for (int j = 0; j < img.getHeight(); j++) {
-                if (img.getPixels()[i][j]==0) img.getPixels()[i][j]=1;
-                else img.getPixels()[i][j]=0;
+    public void invert()
+    {
+        int invertedPixels[][]=new int[this.getWidth()][this.getHeight()];
+
+        for (int x=0;x<this.getWidth();x++)
+        {
+            for (int y=0;y<this.getHeight();y++)
+            {
+                if(this.getPixels()[x][y]==0)
+                    invertedPixels[x][y]=1;
+                else invertedPixels[x][y]=0;
             }
         }
-
-        // write the inverted image to a new file
-        FileWriter writer = new FileWriter("./resources/inverted-image.pbm");
-        writer.write("P1" + "\n");
-        writer.write(img.getWidth() + " " + img.getHeight() + "\n");
-        for (int i = 0; i < img.getWidth(); i++) {
-            for (int j = 0; j < img.getHeight(); j++) {
-                writer.write(img.getPixels()[j][i] + " ");
-            }
-            writer.write("\n");
-        }
-        writer.close();
     }
-    }
-
+}
