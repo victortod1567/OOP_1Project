@@ -47,18 +47,14 @@ public class Commands {
         Main.session.getSession().get(Main.id).add(open(line));
     }
 
-    public void negative()
+   public void negative()
     {
-        List<PBM> imgs=new ArrayList<PBM>((Collection<? extends PBM>) Main.session.getSession().values());
-        for (PBM img : imgs) {
+        List<Image> imgs=Main.session.getSession().get(Main.currentSession);
+        for (Image img : imgs) {
             img.invert();
+
         }
 
-        int i=0;
-        for (Integer key:Main.session.getSession().keySet()) {
-            Main.session.getSession().put(key, (List<Image>) imgs.get(i));
-            i++;
-        }
     }
 
 }

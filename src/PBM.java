@@ -5,12 +5,12 @@ import java.io.IOException;
 
 public class PBM extends Image {
 
-    public PBM(int width, int height, int[][] pixels) {
-        super(width, height, pixels);
+    public PBM(String flag, int width, int height, int[][] pixels) {
+        super(flag, width, height, pixels);
     }
 
 
-    public static Image read(String fileName) throws IOException {
+    /*public static Image read(String fileName) throws IOException {
         try {
             BufferedReader reader = new BufferedReader(new FileReader("./resources/" + fileName));
 
@@ -39,8 +39,8 @@ public class PBM extends Image {
         }
         return null;
     }
-
-    public void invert()
+*/
+   /* public void invert()
     {
         int invertedPixels[][]=new int[this.getWidth()][this.getHeight()];
 
@@ -54,4 +54,6 @@ public class PBM extends Image {
             }
         }
     }
+    */
+
 }
