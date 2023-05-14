@@ -1,4 +1,5 @@
 import java.io.*;
+import java.util.Scanner;
 
 public class Image {
 
@@ -21,6 +22,12 @@ public class Image {
         this.width = width;
         this.height = height;
         this.ppmPixels = ppmPixels;
+    }
+
+    public Image(String flag, int width, int height) {
+        this.flag = flag;
+        this.width = width;
+        this.height = height;
     }
 
     public String getFlag() {
@@ -76,41 +83,56 @@ public class Image {
             line= reader.readLine();
             maxGreyVal=Integer.parseInt(line);
 
-            for (int y = 0; y < height; y++) {
-                line = reader.readLine();
-                String row[] = line.trim().split(" ");
-                for (int x = 0; x < row.length; x++) {
-                    pixels[y][x] = (int) (255.0 * Double.parseDouble(row[x]) / maxGreyVal);
+            int row=0;
+            int col=0;
+            while((line=reader.readLine())!=null)
+            {
+                String[] values=line.split(" ");
+                for (String value : values) {
+                    pixels[row][col]=Integer.parseInt(value);
+                    col++;
+                    if (col==width)
+                    {
+                        col=0;
+                        row++;
+                        if (row==height) break;
+                    }
                 }
             }
+
             reader.close();
             return new PGM(flag,width,height,pixels,maxGreyVal);
         }
 
         else {
-            int[][][] ppmPixels = new int[height][width][3];
             line = reader.readLine();
             maxGreyVal = Integer.parseInt(line);
+            int totalPixels=width*height;
+            int[] red=new int[totalPixels];
+            int[] green=new int[totalPixels];
+            int[] blue=new int[totalPixels];
 
-            for (int y=0; y<height; y++) {
-                line = reader.readLine();
-                String row[] = line.trim().split(" ");
-                for (int x=0; x<row.length; x++) {
-                    if (x*3+2<row.length) {
-                        ppmPixels[y][x][0] = (int) (255.0 * Double.parseDouble(row[x * 3]) / maxGreyVal);
-                        ppmPixels[y][x][1] = (int) (255.0 * Double.parseDouble(row[x * 3 + 1]) / maxGreyVal);
-                        ppmPixels[y][x][2] = (int) (255.0 * Double.parseDouble(row[x * 3 + 2]) / maxGreyVal);
+            int count=0;
+            while ((line = reader.readLine()) != null && count < totalPixels) {
+                String[] values = line.trim().split(" ");
+                for (int i = 0; i < values.length; i += 3) {
+                    red[count] = Integer.parseInt(values[i]);
+                    green[count] = Integer.parseInt(values[i + 1]);
+                    blue[count] = Integer.parseInt(values[i + 2]);
+                    count++;
+
+                    if (count >= totalPixels) {
+                        break;
                     }
                 }
             }
 
-            return new PPM(flag,width,height,ppmPixels,maxGreyVal);
+            return new PPM(flag,width,height,maxGreyVal,red,green,blue);
         }
 
     }
 
-    public void invert()
-    {
+    public void invert() throws IOException {
         this.invert();
     }
     //public abstract void write(Image img, String fileName);

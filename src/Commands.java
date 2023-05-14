@@ -26,7 +26,8 @@ public class Commands {
     public Image open(String fileName) throws IOException {
         Image img=Image.read(fileName);
         Main.session.getSession().get(Main.currentSession).add(img);
-        if (img instanceof PBM) ((PBM) img).writePBM(img.getPixels(),"p4test.pbm");
+    if (img instanceof PPM) ((PPM) img).writePPM("test.ppm", img.getWidth(),img.getHeight(),((PPM) img).getRed(),((PPM) img).getGreen(),((PPM) img).getBlue(),((PPM) img).getMaxGreyVal());
+
         return img;
 
     }
@@ -53,7 +54,7 @@ public class Commands {
         List<Image> imgs=Main.session.getSession().get(Main.currentSession);
         for (Image img : imgs) {
             img.invert();
-            if (img instanceof PBM) ((PBM) img).writePBM(img.getPixels(),"invertedIMGtest.pbm");
+
         }
 
     }
