@@ -8,8 +8,8 @@ public class Commands {
                 "\nopen             Opens a file. If such doesn't exist an empty one is created" +
                 "\nclose            Closes a file" +
                 "\nsave             Saves a file" +
-                "\nsaveAs           Saves file as" +
                 "\nchangeSession    Changes the current user session" +
+                "\ncollage          Syntax: <direction> <image1> <image2> <outimage>. Makes a collage of two images either horizontally or vertically" +
                 "\nhelp             Lists available commands" +
                 "\nexit             Exits the program");
     }
@@ -144,6 +144,24 @@ public class Commands {
         }
     }
 
+    public void collage(String direction, String fileName1,String fileName2,String fileName3) throws IOException, CloneNotSupportedException {
+        backUp();
+        List<Image> imgs = Main.session.getSession().get(Main.currentSession);
+        Image img1=null;
+        Image img2=null;
+        for (Image img : imgs) {
+            if (img.getFileName().equals(fileName1)) img1=img;
+            if (img.getFileName().equals(fileName2)) img2=img;
+        }
+
+        if (img1!=null && img2!=null)
+        {
+            Main.session.getSession().get(Main.id).add(img1.collage(direction,img1,img2,fileName3));
+        }
+
+        else throw new IllegalArgumentException("No such file found");
+
+    }
     public void change(int id)
     {
         Set<Integer> ids=Main.session.getSession().keySet();

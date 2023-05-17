@@ -2,7 +2,7 @@ import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
 
-public class PPM extends Image{
+public class PPM extends Image implements Cloneable{
 
     private int maxGreyVal;
     private int[] red;
@@ -43,6 +43,33 @@ public class PPM extends Image{
 
     public void setBlue(int[] blue) {
         this.blue = blue;
+    }
+
+    public void setMaxGreyVal(int maxGreyVal) {
+        this.maxGreyVal = maxGreyVal;
+    }
+
+    @Override
+    public Image clone() throws CloneNotSupportedException {
+        PPM copyPPM=(PPM) super.clone();
+        int totalPixels=this.getHeight()*this.getWidth();
+        int[] red = new int[totalPixels];
+        int[] green = new int[totalPixels];
+        int[] blue = new int[totalPixels];
+
+        for (int i=0;i<totalPixels;i++)
+        {
+            red[i]=this.getRed()[i];
+            green[i]=this.getGreen()[i];
+            blue[i]=this.getBlue()[i];
+        }
+
+        copyPPM.setRed(red);
+        copyPPM.setGreen(green);
+        copyPPM.setBlue(blue);
+        copyPPM.setMaxGreyVal(this.maxGreyVal);
+
+        return copyPPM;
     }
 
     public void writePPM(String fileName, int width, int height, int[] red, int[] green, int[] blue, int maxGreyVal) throws IOException {
@@ -177,4 +204,68 @@ public class PPM extends Image{
         this.setGreen(monGreen);
         this.setBlue(monBlue);
     }
+
+    @Override
+    public Image collage(String direction, Image image1, Image image2, String fileName3) throws IOException {
+
+        if (direction.equals("horizontal")) {
+            int totalWidth=image1.getWidth()+image2.getWidth();
+            int height=image1.getHeight();
+            int totalPixels = totalWidth * height;
+            int[] red = new int[totalPixels];
+            int[] green = new int[totalPixels];
+            int[] blue = new int[totalPixels];
+
+            for (int y = 0; y < height; y++) {
+                for (int x = 0; x < image1.getWidth(); x++) {
+                    int index = y * totalWidth + x;
+                    red[index] = ((PPM)image1).getRed()[y * image1.getWidth() + x];
+                    green[index] = ((PPM)image1).getGreen()[y * image1.getWidth() + x];
+                    blue[index] = ((PPM)image1).getBlue()[y * image1.getWidth() + x];
+                }
+            }
+
+            for (int y = 0; y < height; y++) {
+                for (int x = 0; x < image2.getWidth(); x++) {
+                    int index = y * totalWidth + (x + image1.getWidth());
+                    red[index] = ((PPM)image2).getRed()[y * image2.getWidth() + x];
+                    green[index] = ((PPM)image2).getGreen()[y * image2.getWidth() + x];
+                    blue[index] = ((PPM)image2).getBlue()[y * image2.getWidth() + x];
+                }
+            }
+
+            return new PPM(fileName3,image1.getFlag(),totalWidth,height,this.maxGreyVal,red,green,blue);
+        }
+        else if(direction.equals("vertical")) {
+
+            int width=image1.getWidth();
+            int totalHeight=image1.getHeight()+ image2.getHeight();
+            int totalPixels = width * totalHeight;
+            int[] red = new int[totalPixels];
+            int[] green = new int[totalPixels];
+            int[] blue = new int[totalPixels];
+
+            for (int y = 0; y < image1.getHeight(); y++) {
+                for (int x = 0; x < width; x++) {
+                    int index = y * width + x;
+                    red[index] = ((PPM)image1).getRed()[y * width + x];
+                    green[index] = ((PPM)image1).getGreen()[y * width + x];
+                    blue[index] = ((PPM)image1).getBlue()[y * width + x];
+                }
+            }
+
+            for (int y = 0; y < image2.getHeight(); y++) {
+                for (int x = 0; x < width; x++) {
+                    int index = (y+image1.getHeight())*width+x;
+                    red[index] = ((PPM)image2).getRed()[y * width + x];
+                    green[index] = ((PPM)image2).getGreen()[y * width + x];
+                    blue[index] = ((PPM)image2).getBlue()[y * width + x];
+                }
+            }
+
+            return new PPM(fileName3,image1.getFlag(),width,totalHeight,this.maxGreyVal,red,green,blue);
+        }
+        else throw new IllegalArgumentException("Unknown direction. Available: horizontal, vertical.");
+    }
 }
+

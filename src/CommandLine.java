@@ -52,6 +52,9 @@ public class CommandLine {
                 case "changeSession":
                     commands.change(Integer.parseInt(readLine[1]));
                     break;
+                case "collage":
+                    commands.collage(readLine[1],readLine[2],readLine[3],readLine[4]);
+                    break;
                 case "exit":
                     commands.exit();
                     break;

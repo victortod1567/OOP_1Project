@@ -1,5 +1,6 @@
 import java.io.*;
-import java.util.Scanner;
+import java.util.*;
+import java.util.stream.Stream;
 
 public class Image implements Cloneable{
 
@@ -172,5 +173,17 @@ public class Image implements Cloneable{
         if (this instanceof PBM) return;
             else this.monochrome();
     }
+
+    public Image collage(String direction, Image image1,Image image2,String fileName3) throws IOException {
+
+        if (!image1.getFlag().equals(image2.getFlag()) ||
+                image1.getWidth() != image2.getWidth() ||
+                image1.getHeight() != image2.getHeight()) {
+            throw new IllegalArgumentException("Images must have the same format and size");
+        }
+        return this.collage(direction,image1,image2,fileName3);
+    }
+
+
 
 }
