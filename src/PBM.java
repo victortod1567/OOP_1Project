@@ -2,8 +2,8 @@ import java.io.*;
 
 public class PBM extends Image {
 
-    public PBM(String flag, int width, int height, int[][] pixels) {
-        super(flag, width, height, pixels);
+    public PBM(String fileName,String flag, int width, int height, int[][] pixels) {
+        super(fileName,flag, width, height, pixels);
     }
 
 
@@ -35,50 +35,27 @@ public class PBM extends Image {
 
 
     }
-    /*public static Image read(String fileName) throws IOException {
-        try {
-            BufferedReader reader = new BufferedReader(new FileReader("./resources/" + fileName));
 
-            String line = reader.readLine();
-            while ( line.startsWith("P") || line.startsWith("#"))
-                line= reader.readLine();
-            String size;
-
-            String[] sizeD = line.split(" ");
-            int width = Integer.parseInt(sizeD[0]);
-            int height = Integer.parseInt(sizeD[1]);
-            int[][] pixels = new int[width][height];
-
-
-            for (int y=0;y<height;y++)
-            {
-                line= reader.readLine();
-                String row[]=line.trim().split(" ");
-                for (int x=0;x<width;x++)
-                    pixels[x][y]=Integer.parseInt(row[x]);
-            }
-            reader.close();
-            return new PBM(width, height, pixels);
-        } catch (IOException e) {
-            System.out.println(e.getMessage());
-        }
-        return null;
-    }
-*/
-   /* public void invert()
+    public void rotate(String direction)
     {
-        int invertedPixels[][]=new int[this.getWidth()][this.getHeight()];
-
-        for (int x=0;x<this.getWidth();x++)
-        {
-            for (int y=0;y<this.getHeight();y++)
-            {
-                if(this.getPixels()[x][y]==0)
-                    invertedPixels[x][y]=1;
-                else invertedPixels[x][y]=0;
+        if (direction.equals("right")) {
+            int[][] rotatedP = new int[this.getWidth()][this.getHeight()];
+            for (int y = 0; y < this.getHeight(); y++) {
+                for (int x = 0; x < this.getWidth(); x++)
+                    rotatedP[x][this.getHeight() - y - 1] = this.getPixels()[y][x];
             }
+            this.setPixels(rotatedP);
+        }
+        else if (direction.equals("left"))
+        {
+            int[][] rotatedP = new int[this.getWidth()][this.getHeight()];
+            for (int y = 0; y < this.getHeight(); y++) {
+                for (int x = 0; x < this.getWidth(); x++)
+                    rotatedP[this.getWidth()-x-1][y] = this.getPixels()[y][x];
+            }
+            this.setPixels(rotatedP);
+        }
+        else System.out.printf("Unknown direction. Available: right,left");
         }
     }
-    */
 
-}

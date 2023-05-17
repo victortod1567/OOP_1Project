@@ -11,7 +11,12 @@ public class Session {
         this.session = session;
     }
 
+    public void setSession(Map<Integer, List<Image>> session) {
+        this.session = session;
+    }
+
     public Map<Integer, List<Image>> getSession() {
         return session;
     }
+
 }
