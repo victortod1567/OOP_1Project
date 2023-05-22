@@ -3,7 +3,7 @@ import java.util.HashMap;
 import java.util.Scanner;
 
 public class CommandLine {
-
+    //инициализира командния ред
    Commands commands=new Commands();
     String[] readLine;
 
@@ -12,9 +12,11 @@ public class CommandLine {
 
     public void initLine() throws IOException {
     try {
-        Scanner userInput = new Scanner(System.in);
+        Scanner userInput = new Scanner(System.in); //скенер за входни данни от потребителя
         while (true) {
-            readLine = userInput.nextLine().split(" ");
+            readLine = userInput.nextLine().split(" ");//масив, съдържаш командата и съответните и аргументи ако има такива
+            //при разпозната команда се извиква съответния за него метод, в противен случай се извежда съобщение за
+            //неразпозната команда
             switch (readLine[0]) {
                 case "help":
                     commands.help();
@@ -42,6 +44,9 @@ public class CommandLine {
                     break;
                 case "save":
                     commands.save();
+                    break;
+                case "saveAs":
+                    commands.saveAs(readLine[1]);
                     break;
                 case "undo":
                     commands.undo();

@@ -8,16 +8,24 @@ public class Commands {
                 "\nopen             Opens a file. If such doesn't exist an empty one is created" +
                 "\nclose            Closes a file" +
                 "\nsave             Saves a file" +
+                "\nsaveAs           Saves a file as. Syntax: saveAs <filename or path>" +
                 "\nchangeSession    Changes the current user session" +
-                "\ncollage          Syntax: <direction> <image1> <image2> <outimage>. Makes a collage of two images either horizontally or vertically" +
+                "\ncollage          Syntax: collage <direction> <image1> <image2> <outimage>. Makes a collage of two images either horizontally or vertically" +
                 "\nhelp             Lists available commands" +
                 "\nexit             Exits the program");
     }
 
-    public void open(String fileName) throws IOException {
-        Image img = Image.read(fileName);
-        System.out.println("File "+fileName+" successfully loaded");
-        Main.session.getSession().get(Main.id).add(img);
+    public void open(String fileName) throws IOException{
+        try
+        {
+            Image img = Image.read(fileName);
+            System.out.println("File "+fileName+" successfully loaded");
+            Main.session.getSession().get(Main.id).add(img);
+        }
+        catch (IOException e)
+        {
+            System.out.println(e.getMessage());
+        }
 
     }
 
@@ -32,7 +40,7 @@ public class Commands {
 
     }
 
-    public void load(String line) throws IOException {
+    public void load(String line) {
         try {
             Main.session.getSession().put(++Main.id, new ArrayList<>());
             Main.currentSession = Main.id;
@@ -60,8 +68,6 @@ public class Commands {
         for (Image img : imgs) {
             if (img instanceof PPM)
             {((PPM) img).grayscale(((PPM) img).getRed(),((PPM) img).getGreen(),((PPM) img).getBlue());
-                ((PPM) img).writePPM("ppmgray.ppm", img.getWidth(), img.getHeight(),  ((PPM) img).getRed(), ((PPM) img).getGreen(), ((PPM) img).getBlue(), ((PPM) img).getMaxGreyVal());
-
             }
         }
 
@@ -88,7 +94,7 @@ public class Commands {
         try {
             List<Image> imgs = Main.session.getSession().get(Main.currentSession);
             for (Image img : imgs) {
-                img.write();
+                img.write(img.getFileName());
             }
             System.out.println("Successfully saved!");
         }
@@ -98,6 +104,19 @@ public class Commands {
         }
     }
 
+    public void saveAs(String fileName) throws IOException {
+        System.out.println("Enter the name of the file to save as: ");
+        Scanner userInput = new Scanner(System.in);
+        String name=userInput.nextLine();
+        List<Image> imgs = Main.session.getSession().get(Main.currentSession);
+        for (Image img : imgs) {
+            if (img.getFileName().equals(name)) {
+                img.write(fileName);
+                System.out.println("Successfully saved!");
+            }
+            else System.out.println("No such file found!");
+        }
+    }
     public void backUp() throws CloneNotSupportedException {
         Map<Integer, List<Image>> sessionCopy = new HashMap<>();
         for (Map.Entry<Integer, List<Image>> entry : Main.session.getSession().entrySet()) {
