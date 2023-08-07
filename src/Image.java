@@ -1,6 +1,8 @@
+
+
+import com.sun.media.sound.InvalidFormatException;
+
 import java.io.*;
-import java.util.*;
-import java.util.stream.Stream;
 
 public abstract class Image implements Cloneable{
     //Общи за форматите полета
@@ -79,9 +81,9 @@ public abstract class Image implements Cloneable{
                     String[] sizeD = line.split(" "); //прочитаме размерите на изображението и ги записваме в width и height
                     int width = Integer.parseInt(sizeD[0]);
                     int height = Integer.parseInt(sizeD[1]);
-                    int maxGreyVal = 0; //максимална стойност на пиксела (PPM и PGM)
+                    int maxGreyVal = 0; //максимална стойност на пиксела (Formats.PPM и Formats.PGM)
 
-                    if (flag.equals("P1")) { //PBM
+                    if (flag.equals("P1")) { //Formats.PBM
                         int[][] pixels = new int[height][width]; //инициализираме матрица със съответните размери
                         for (int y = 0; y < height; y++) {       //прочита всеки пиксел по редове и ги записва в матрицата
                             line = reader.readLine();
@@ -138,7 +140,7 @@ public abstract class Image implements Cloneable{
 
                         return new PPM(fileName, flag, width, height, maxGreyVal, red, green, blue);
                     }
-                    else throw new IOException("Not a valid Netpbm file!");
+                    else throw new InvalidFormatException("File is not Netpbm");
 
     }
 
@@ -154,7 +156,7 @@ public abstract class Image implements Cloneable{
 
     public void rotate(String direction)
     {
-        this.rotate(direction); //метода е презаписан във всеки от наследниците на Image и се извиква за съответния формат
+        this.rotate(direction); //метода е презаписан във всеки от наследниците на Formats.Image и се извиква за съответния формат
     }
 
     public void write(String fileName) throws IOException {

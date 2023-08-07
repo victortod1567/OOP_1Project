@@ -1,3 +1,5 @@
+
+
 import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -166,7 +168,7 @@ public class PPM extends Image implements Cloneable{
     }
 
     public void invert()
-    {   //негатив на PPM изображение
+    {   //негатив на Formats.PPM изображение
         int[] negRed=this.getRed();         //нови масиви за
         int[] negGreen=this.getGreen();     //всеки от трите канала
         int[] negBlue=this.getBlue();
